@@ -1,7 +1,29 @@
-# Vue 3 + Vite
+# UI-PERSONAL-FINANCE
+### Front criado para para consumir api
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+### Descrição
+esse front consome uma api própria criada por mim para fins de estudos. https://github.com/neiltonrodriguez/api-personal-finance-dockerizado
+se quiser, pode clonar o repositório da api e rodar com docker.
 
-## Recommended IDE Setup
+### Contexto de negócio
+```
+VueJs
+Axios
+Pínia
+Docker
+```
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+
+## Executar localmente
+na primeira vez, use:
+```
+# docker-compose up -d --build
+```
+
+
+#### endereços para acesso:
+```
+Endereço do app: http://localhost:3000/#/
+```
+
+Developed by Neilton Rodrigues
