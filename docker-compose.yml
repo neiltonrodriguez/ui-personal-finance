@@ -1,0 +1,54 @@
+# version: '3'
+# services:
+#     app:
+#         build: .
+#         working_dir: /app/dist
+#         ports: 
+#             - "3000:3000"
+#         volumes:
+#             - "/app/node_modules" 
+#             - ".:/app"
+#         command: ['npm', 'run', 'dev']
+# version: "3.4"
+
+# services:
+#   # node:
+#   #   build:
+#   #     context: "node/"
+#   #   image: node-app
+#   #   env_file:
+#   #     - "./node/.env"
+#   #   ports:
+#   #     - 3000:3000
+
+#   vue:
+#     build:
+#       context: .
+#     image: vue-app
+#     env_file:
+#       - ".env"
+#     ports:
+#       - 6000:3000
+
+
+# docker-compose.yml
+version: '3'
+
+services:
+    app:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: vue-app
+      ports:
+        - 3000:90
+
+    nginx:
+      image: nginx:alpine
+      container_name: nginx-app
+      volumes:
+        - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      ports:
+        - 80:80
+      depends_on:
+        - app

@@ -1,5 +1,5 @@
 <template>
-    <h1>teste dashboard</h1>
+    <h1 class="text-4xl">teste dashboard</h1>
 </template>
 <script setup>
 </script>

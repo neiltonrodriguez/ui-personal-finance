@@ -5,7 +5,6 @@ import http from '../services/http.js'
 export const useAuth = defineStore('auth', () => {
     const token = ref(localStorage.getItem('token'));
     const user = ref(JSON.parse(localStorage.getItem('user')));
-    const modulos = ref(JSON.parse(localStorage.getItem('modulos')));
 
     function setToken(tokenValue) {
         localStorage.setItem('token', tokenValue);
@@ -17,29 +16,22 @@ export const useAuth = defineStore('auth', () => {
         user.value = userValue
     }
 
-    function setModulos(p) {
-        localStorage.setItem('modulos', JSON.stringify(p.modulos[0]));
-        modulos.value = p.modulos[0]
-    }
-
     function clear() {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        localStorage.removeItem('modulos');
         token.value = '';
         user.value = '';
-        modulos.value = '';
     }
 
     async function checkToken() {
         try {
             const tokenAuth = 'Bearer ' + token.value
-            const { data } = await http.get('me', {
+            const { data } = await http.post('check', {
                 headers: {
                     Authorization: tokenAuth
                 }
             });
-            if (data.code === "token_valid") {
+            if (data.check) {
                 return true
             }
             return false
@@ -56,7 +48,5 @@ export const useAuth = defineStore('auth', () => {
         user,
         clear,
         setUser,
-        setModulos,
-        modulos,
     }
 })

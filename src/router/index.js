@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+import { useAuth } from '../stores/auth.js'
 
 const routes = [
     {
@@ -12,7 +13,7 @@ const routes = [
     {
         path: '/',
         name: 'dashboard',
-        component: () => import(/* webpackChunkName: "login" */ '../views/Dashboard.vue'),
+        component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
         meta: {
             auth: true
         },
@@ -34,11 +35,11 @@ const router = createRouter({
     routes
 })
 
-router.beforeEach(async, (to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     if(to.meta?.auth) {
         const auth = useAuth()
         if(auth.token) {
-            const isAuthenticated = auth.checkToken()
+            const isAuthenticated = await auth.checkToken()
             if(isAuthenticated){
                 next()
             } else {
@@ -46,8 +47,10 @@ router.beforeEach(async, (to, from, next) => {
             }
 
         } else {
-            next()
+            next({name: 'login'})
         }
+    } else {
+        next()
     }
 })
 
