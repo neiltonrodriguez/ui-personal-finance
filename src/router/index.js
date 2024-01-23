@@ -18,14 +18,14 @@ const routes = [
             auth: true
         },
         children: [
-            // {
-            //     path: '/',
-            //     name: 'dashboard',
-            //     component: () => import(/* webpackChunkName: "login" */ '../views/Dashboard.vue'),
-            //     meta: {
-            //         auth: true
-            //     },
-            // },
+            {
+                path: '/',
+                name: 'dashboard',
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
+                meta: {
+                    auth: true
+                },
+            },
         ]
     },
 ]
