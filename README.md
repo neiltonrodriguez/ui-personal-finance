@@ -11,6 +11,8 @@ VueJs
 Axios
 Pínia
 Docker
+TailwindCSS
+VueRouter
 ```
 
 
@@ -23,7 +25,7 @@ na primeira vez, use:
 
 #### endereços para acesso:
 ```
-Endereço do app: http://localhost:3000/#/
+Endereço do app: http://localhost:3000
 ```
 
 Developed by Neilton Rodrigues
