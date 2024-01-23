@@ -20,8 +20,8 @@ const routes = [
         children: [
             {
                 path: '/',
-                name: 'dashboard',
-                component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
+                name: 'transactions',
+                component: () => import(/* webpackChunkName: "transactions" */ '../views/transactions/Transactions.vue'),
                 meta: {
                     auth: true
                 },
