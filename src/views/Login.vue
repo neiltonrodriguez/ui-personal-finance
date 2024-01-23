@@ -61,25 +61,25 @@
 </template>
 
 <script setup>
+import { ref, inject } from 'vue'
 import http from "./../services/http.js";
 import { useAuth } from "../stores/auth.js";
 import router from "./../router/index.js";
 
 const auth = useAuth();
+const swal = inject('$swal')
 
 const user = ref({});
 function login() {
   http
-    .post("/login/", this.user)
+    .post("/login/", user.value)
     .then((res) => {
-      console.log(res.data);
       auth.setToken(res.data.token);
       auth.setUser(res.data.data);
       router.push("/");
     })
     .catch((e) => {
-      console.log("erro aqui");
-      // this.$swal("Erro!", "Email ou senha incorreta", "error");
+      swal("Erro!", "Email ou senha incorreta", "error");
     });
 }
 
