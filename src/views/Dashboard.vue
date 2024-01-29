@@ -1,9 +1,12 @@
 <template>
-    <h1 class="text-4xl">teste dashboard</h1>
-    <div>
-        <router-view></router-view>
+    <div class="bg-slate-100 h-full w-full">
+        <Navbar />
+        <div>
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 <script setup>
 import router from '../router/index'
+import Navbar from '../components/Navbar.vue'
 </script>
