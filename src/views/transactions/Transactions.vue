@@ -40,7 +40,7 @@
               </td>
               <td class="px-6 py-4">{{ t.category }}</td>
               <td class="px-6 py-4 flex gap-3">
-                <template v-if="t.type_transaction == 'gastos'">
+                <template v-if="t.type_transaction == 'gasto'">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -87,7 +87,7 @@
       <!-- drawer component -->
       <div
         id="drawer-example"
-        class="left-0 z-40 top-0 fixed h-screen p-4 bg-white w-96"
+        class="left-0 z-40 top-0 border-2 max-w-2xl fixed h-screen p-4 bg-white w-full"
         tabindex="-1"
         aria-labelledby="drawer-label"
       >
@@ -95,7 +95,7 @@
           id="drawer-label"
           class="inline-flex items-center mb-4 text-base font-semibold text-gray-500"
         >
-          New Transaction
+          Nova Transaction
         </h5>
         <button @click="showDrawer"
           type="button"
@@ -144,7 +144,7 @@
                 <input class="bg-slate-100 w-full p-2">
               </div>
             </div>
-              <div class="grid grid-cols-2 gap-4">
+              <div class="grid grid-cols-2 gap-4 mt-10">
                 <button
                   @click="showDrawer"
                   class="px-4 py-2 text-sm font-medium text-center text-white bg-red-500 border border-gray-200 rounded-lg focus:outline-none hover:bg-red-700 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-200"
