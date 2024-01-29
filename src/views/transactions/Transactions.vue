@@ -131,9 +131,10 @@
                 <label>categoria</label>
                 <input class="bg-slate-100 w-full p-2">
               </div>
-              <div class="mt-3">
-                <label>tipo</label>
-                <input class="bg-slate-100 w-full p-2">
+              <div class="mt-3 p-2 flex items-center my-2"> 
+                <select class="w-full block bg-slate-100 p-2 text-sm">
+                  <option v-for="ty in transactionsTypes" :key="ty.id" :value="ty.id">{{ ty.title }}</option>
+                </select>
               </div>
               <div class="mt-3">
                 <label>valor R$</label>
@@ -172,6 +173,7 @@ const swal = inject("$swal");
 var isVisibleDrawer = ref()
 
 const transactions = ref({});
+const transactionsTypes = ref({});
 function convertDate(date) {
   return moment(date).format("DD/MM/YYYY");
 }
@@ -193,7 +195,19 @@ function getTransactions() {
     });
 }
 
+function getTransactionTypes(){
+  http.get("/transaction_type")
+  .then((res) => {
+    transactionsTypes.value = res.data.data
+  })
+  .catch((e) => {
+    swal("Erro!", "não foi possível buscar tipos de transações", "error");
+  })
+
+}
+
 onMounted(() => {
   getTransactions();
+  getTransactionTypes();
 });
 </script>
