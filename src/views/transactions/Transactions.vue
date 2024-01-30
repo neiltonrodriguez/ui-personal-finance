@@ -5,13 +5,13 @@
         class="flex-1 p-3 flex flex-col items-center justify-center bg-white"
       >
         <div class="text-slate-400">últimas entradas</div>
-        <div class="text-4xl text-green-600">R$230,00</div>
+        <div class="text-4xl text-green-600">R${{ transactionsIn }}</div>
       </div>
       <div
         class="flex-1 p-3 flex flex-col items-center justify-center bg-white"
       >
         <div class="text-slate-400">últimas saídas</div>
-        <div class="text-4xl text-red-600">R$230,00</div>
+        <div class="text-4xl text-red-600">R${{ transactionsOut }}</div>
       </div>
     </div>
     <div class="mt-5">
@@ -121,29 +121,37 @@
 
         <p class="mb-6 text-sm text-gray-500">
           Cadastre uma nova transação.
-          <form>
+          <form v-on:submit.prevent="createTransactions(payload)">
             <div>
               <div class="mt-3">
                 <label>titulo</label>
-                <input class="bg-slate-100 w-full p-2">
+                <input v-model="payload.title" class="bg-slate-100 w-full p-2">
               </div>
-              <div class="mt-3">
+               <div class="mt-3"> 
                 <label>categoria</label>
-                <input class="bg-slate-100 w-full p-2">
+                <select v-model="payload.category_id" class="w-full m-0 block bg-slate-100 p-2.5">
+                  <option v-for="c in categorys" :key="c.id" :value="c.id">{{ c.title }}</option>
+                </select>
+              </div>
+              <div class="mt-3"> 
+                <label>conta</label>
+                <select v-model="payload.account_id" class="w-full m-0 block bg-slate-100 p-2.5">
+                  <option v-for="ac in accounts" :key="ac.id" :value="ac.id">{{ ac.title }}</option>
+                </select>
               </div>
               <div class="mt-3"> 
                 <label>tipo</label>
-                <select class="w-full m-0 block bg-slate-100 p-2.5">
+                <select v-model="payload.type_transaction_id" class="w-full m-0 block bg-slate-100 p-2.5">
                   <option v-for="ty in transactionsTypes" :key="ty.id" :value="ty.id">{{ ty.title }}</option>
                 </select>
               </div>
               <div class="mt-3">
                 <label>valor R$</label>
-                <input class="bg-slate-100 w-full p-2">
+                <input v-model="payload.value" class="bg-slate-100 w-full p-2">
               </div>
               <div class="mt-3">
                 <label>descrição</label>
-                <input class="bg-slate-100 w-full p-2">
+                <input v-model="payload" class="bg-slate-100 w-full p-2">
               </div>
             </div>
               <div class="grid grid-cols-2 gap-4 mt-10">
@@ -173,8 +181,13 @@ import moment from "moment";
 const swal = inject("$swal");
 var isVisibleDrawer = ref()
 
-const transactions = ref({});
-const transactionsTypes = ref({});
+const transactions = ref([]);
+var payload = ref({})
+const transactionsIn = ref();
+const transactionsOut = ref();
+const accounts = ref([]);
+const categorys = ref([]);
+const transactionsTypes = ref([]);
 function convertDate(date) {
   return moment(date).format("DD/MM/YYYY");
 }
@@ -184,17 +197,66 @@ function showDrawer() {
   isVisibleDrawer.value = !isVisibleDrawer.value
 }
 
-function getTransactions() {
+function createTransactions(payload) {
   http
-    .get("/transaction")
+    .post("/transaction", payload)
     .then((res) => {
-      transactions.value = res.data.data;
-      router.push("/");
+      getTransactions();
+      showDrawer();
     })
     .catch((e) => {
       swal("Erro!", "Email ou senha incorreta", "error");
     });
 }
+
+
+function getCategorys() {
+  http
+    .get("/category")
+    .then((res) => {
+      categorys.value = res.data.data;
+    })
+    .catch((e) => {
+      swal("Erro!", "Email ou senha incorreta", "error");
+    });
+}
+
+function getAccounts() {
+  http
+    .get("/account")
+    .then((res) => {
+      accounts.value = res.data.data;
+    })
+    .catch((e) => {
+      swal("Erro!", "Email ou senha incorreta", "error");
+    });
+}
+
+function getTransactions() {
+  http
+    .get("/transaction")
+    .then((res) => {
+      transactions.value = res.data.data;
+
+    })
+    .catch((e) => {
+      swal("Erro!", "Email ou senha incorreta", "error");
+    });
+}
+
+function getTransactionsTotal() {
+  http
+    .get("/transaction/total")
+    .then((res) => {
+      transactionsIn.value = res.data.data.total_in;
+      transactionsOut.value = res.data.data.total_out;
+
+    })
+    .catch((e) => {
+      swal("Erro!", "Email ou senha incorreta", "error");
+    });
+}
+
 
 function getTransactionTypes(){
   http.get("/transaction_type")
@@ -209,6 +271,9 @@ function getTransactionTypes(){
 
 onMounted(() => {
   getTransactions();
+  getTransactionsTotal();
   getTransactionTypes();
+  getAccounts();
+  getCategorys();
 });
 </script>
