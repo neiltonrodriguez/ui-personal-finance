@@ -19,7 +19,7 @@
         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
-              <th scope="col" class="px-6 py-3">Title</th>
+              <th tabindex="1" scope="col" class="px-6 py-3">Title</th>
               <th scope="col" class="px-6 py-3">Category</th>
               <th scope="col" class="px-6 py-3">Tipo</th>
               <th scope="col" class="px-6 py-3">Value</th>
@@ -85,10 +85,9 @@
       <button @click="showDrawer" class="bg-blue-600 items-end p-3 rounded-md text-white hover:bg-blue-700">Nova transação</button></div>
     <div v-if="isVisibleDrawer">
       <!-- drawer component -->
-      <div
+      <div @blur="showDrawer"
         id="drawer-example"
         class="left-0 z-40 top-0 border-2 max-w-2xl fixed h-screen p-4 bg-white w-full"
-        tabindex="-1"
         aria-labelledby="drawer-label"
       >
         <h5
@@ -179,7 +178,7 @@ import router from "../../router/index.js";
 import moment from "moment";
 
 const swal = inject("$swal");
-var isVisibleDrawer = ref()
+const isVisibleDrawer = ref()
 
 const transactions = ref([]);
 var payload = ref({})
@@ -188,12 +187,14 @@ const transactionsOut = ref();
 const accounts = ref([]);
 const categorys = ref([]);
 const transactionsTypes = ref([]);
+console.log("testtttt")
+
 function convertDate(date) {
   return moment(date).format("DD/MM/YYYY");
 }
 
 function showDrawer() {
-  console.log(isVisibleDrawer)
+  console.log(isVisibleDrawer.value)
   isVisibleDrawer.value = !isVisibleDrawer.value
 }
 
@@ -208,7 +209,6 @@ function createTransactions(payload) {
       swal("Erro!", "Email ou senha incorreta", "error");
     });
 }
-
 
 function getCategorys() {
   http
