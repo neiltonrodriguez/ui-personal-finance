@@ -1,12 +1,12 @@
 <template>
     <div 
         id="drawer-example"
-        class="left-0 z-40 top-0 border-2 max-w-2xl fixed h-screen p-4 bg-white w-full"
+        class="left-0 z-40 top-0 border-2 max-w-lg fixed h-screen p-4 bg-white w-full"
         aria-labelledby="drawer-label"
       >
         <h5
           id="drawer-label"
-          class="inline-flex items-center mb-4 text-base font-semibold text-gray-500"
+          class="inline-flex items-center mb-4 text-2xl font-semibold text-teal-800"
         >
           Nova Transaction
         </h5>
@@ -33,59 +33,58 @@
         </button>
 
         <p class="mb-6 text-sm text-gray-500"></p>
-          Cadastre uma nova transação.
           <form v-on:submit.prevent="createTransactions(payload)">
             <div>
               <div class="mt-3">
                 <label>titulo</label>
-                <input v-model="payload.title" class="bg-slate-100 w-full p-2">
+                <input v-model="payload.title" class="border bg-slate-100 w-full rounded-lg p-2">
               </div>
                <div class="mt-3"> 
                 <label>categoria</label>
-                <select v-model="payload.category_id" class="w-full m-0 block bg-slate-100 p-2.5">
+                <select v-model="payload.category_id" class="border rounded-lg w-full m-0 block bg-slate-100 p-2.5">
                   <option v-for="c in categorys" :key="c.id" :value="c.id">{{ c.title }}</option>
                 </select>
               </div>
               <div class="mt-3"> 
                 <label>conta</label>
-                <select v-model="payload.account_id" class="w-full m-0 block bg-slate-100 p-2.5">
+                <select v-model="payload.account_id" class="border rounded-lg w-full m-0 block bg-slate-100 p-2.5">
                   <option v-for="ac in accounts" :key="ac.id" :value="ac.id">{{ ac.title }}</option>
                 </select>
               </div>
               <div class="mt-3"> 
                 <label>tipo de transação</label>
-                <select v-model="payload.type_transaction_id" class="w-full m-0 block bg-slate-100 p-2.5">
+                <select v-model="payload.type_transaction_id" class="border rounded-lg w-full m-0 block bg-slate-100 p-2.5">
                   <option v-for="ty in transactionsTypes" :key="ty.id" :value="ty.id">{{ ty.title }}</option>
                 </select>
               </div>
               <div class="mt-3"> 
                 <label>tipo de pagamento</label>
-                <select v-model="payload.type_payment_id" class="w-full m-0 block bg-slate-100 p-2.5">
+                <select v-model="payload.type_payment_id" class="border rounded-lg w-full m-0 block bg-slate-100 p-2.5">
                   <option v-for="pt in paymentTypes" :key="pt.id" :value="pt.id">{{ pt.title }}</option>
                 </select>
               </div>
               <div class="mt-3"> 
                 <label>condição</label>
-                <select v-model="payload.condition_id" class="w-full m-0 block bg-slate-100 p-2.5">
+                <select v-model="payload.condition_id" class="border rounded-lg w-full m-0 block bg-slate-100 p-2.5">
                   <option v-for="c in conditions" :key="c.id" :value="c.id">{{ c.title }}</option>
                 </select>
               </div>
               <div class="mt-3">
                 <label>valor R$</label>
-                <input type="number" v-model="payload.value" class="bg-slate-100 w-full p-2">
+                <input type="number" v-model="payload.value" class="border rounded-lg bg-slate-100 w-full p-2">
               </div>
               <div class="mt-3">
                 <label>descrição</label>
-                <input v-model="payload.description" class="bg-slate-100 w-full p-2">
+                <input v-model="payload.description" class="border rounded-lg bg-slate-100 w-full p-2">
               </div>
             </div>
               <div class="grid grid-cols-2 gap-4 mt-10">
                 <button
-                  @click="showDrawer"
-                  class="px-4 py-2 text-sm font-medium text-center text-white bg-red-500 border border-gray-200 rounded-lg focus:outline-none hover:bg-red-700 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-200"
+                  @click="$emit('fechar')"
+                  class="px-4 py-2 text-sm font-medium text-center text-white bg-gray-800 border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-200"
                   >Cancelar</button>
                 <button @click="$emit('payload', payload)"
-                  class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+                  class="inline-flex items-center px-4 py-2 text-sm justify-center font-medium text-center text-white bg-teal-600 rounded-lg hover:bg-teal-700 focus:ring-4 focus:ring-blue-300"
                   >Cadastrar
                 </button>
               </div>

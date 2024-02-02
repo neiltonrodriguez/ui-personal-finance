@@ -99,7 +99,7 @@
     <div class="flex items-end justify-end gap-3 p-3">
       <button
         @click="showDrawer"
-        class="bg-blue-600 items-end p-3 rounded-md text-white hover:bg-blue-700"
+        class="bg-teal-600 items-end p-3 rounded-md text-white hover:bg-teal-700"
       >
         Nova transação
       </button>
@@ -108,11 +108,11 @@
 
   <div
     v-if="isVisibleDrawer"
-    class="backdrop-blur-sm left-0 top-0 w-full fixed h-screen"
+    class="left-0 top-0 w-full fixed h-screen"
   >
     <!-- drawer component -->
     <Drawer @fechar="showDrawer" @payload="createTransactions" />
-    <div class="w-full h-screen" @click="showDrawer"></div>
+    <div class="w-full h-screen bg-black opacity-70 " @click="showDrawer"></div>
   </div>
 </template>
 
