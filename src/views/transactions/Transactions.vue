@@ -1,7 +1,21 @@
 <template>
   <div class="mt-3 max-w-7xl focus-visible: rounded-xl m-auto w-full h-full">
-   
-    <div class="flex gap-2">
+    <div class="flex">
+      <div
+        class="flex-1 p-3 flex flex-col items-center justify-center bg-white"
+      >
+        <div class="text-slate-400">
+          Saldo total:
+          <template v-if="balanceTotal > 0">
+            <div class="text-4xl text-green-600">R${{ balanceTotal }}</div>
+          </template>
+          <template v-else>
+            <div class="text-4xl text-red-600">R${{ balanceTotal }}</div>
+          </template>
+        </div>
+      </div>
+    </div>
+    <div class="flex gap-2 mt-3">
       <div
         class="flex-1 p-3 flex flex-col items-center justify-center bg-white"
       >
@@ -83,38 +97,48 @@
       </div>
     </div>
     <div class="flex items-end justify-end gap-3 p-3">
-      <button @click="showDrawer" class="bg-blue-600 items-end p-3 rounded-md text-white hover:bg-blue-700">Nova transação</button></div>
-   </div> 
-
-  <div v-if="isVisibleDrawer" class="backdrop-blur-sm left-0 top-0 w-full fixed h-screen">
-      <!-- drawer component -->
-      <Drawer @fechar="showDrawer" @payload="createTransactions"/>
-      <div class="w-full h-screen" @click="showDrawer"></div>
+      <button
+        @click="showDrawer"
+        class="bg-blue-600 items-end p-3 rounded-md text-white hover:bg-blue-700"
+      >
+        Nova transação
+      </button>
     </div>
+  </div>
+
+  <div
+    v-if="isVisibleDrawer"
+    class="backdrop-blur-sm left-0 top-0 w-full fixed h-screen"
+  >
+    <!-- drawer component -->
+    <Drawer @fechar="showDrawer" @payload="createTransactions" />
+    <div class="w-full h-screen" @click="showDrawer"></div>
+  </div>
 </template>
 
 <script setup>
 import { ref, onMounted, inject } from "vue";
 import http from "../../services/http.js";
 import router from "../../router/index.js";
-import Drawer from '../../components/Drawer.vue'
+import Drawer from "../../components/Drawer.vue";
 import moment from "moment";
 
 const swal = inject("$swal");
-const isVisibleDrawer = ref()
+const isVisibleDrawer = ref();
 
 const transactions = ref([]);
-var payload = ref({})
+var payload = ref({});
 const transactionsIn = ref();
 const transactionsOut = ref();
+const balanceTotal = ref();
 
 function convertDate(date) {
   return moment(date).format("DD/MM/YYYY");
 }
 
 function showDrawer() {
-  console.log(isVisibleDrawer.value)
-  isVisibleDrawer.value = !isVisibleDrawer.value
+  console.log(isVisibleDrawer.value);
+  isVisibleDrawer.value = !isVisibleDrawer.value;
 }
 
 function createTransactions(payload) {
@@ -122,6 +146,8 @@ function createTransactions(payload) {
     .post("/transaction", payload)
     .then((res) => {
       getTransactions();
+      getTransactionsTotal();
+      getBalanceTotal();
       showDrawer();
     })
     .catch((e) => {
@@ -134,7 +160,17 @@ function getTransactions() {
     .get("/transaction")
     .then((res) => {
       transactions.value = res.data.data;
+    })
+    .catch((e) => {
+      swal("Erro!", "Email ou senha incorreta", "error");
+    });
+}
 
+function getBalanceTotal() {
+  http
+    .get("/account/balance-total")
+    .then((res) => {
+      balanceTotal.value = res.data.data;
     })
     .catch((e) => {
       swal("Erro!", "Email ou senha incorreta", "error");
@@ -147,18 +183,16 @@ function getTransactionsTotal() {
     .then((res) => {
       transactionsIn.value = res.data.data.total_in;
       transactionsOut.value = res.data.data.total_out;
-
     })
     .catch((e) => {
       swal("Erro!", "Email ou senha incorreta", "error");
     });
 }
 
-
-
 onMounted(() => {
   getTransactions();
   getTransactionsTotal();
+  getBalanceTotal();
   // getTransactionTypes();
   // getAccounts();
   // getCategorys();

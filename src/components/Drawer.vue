@@ -64,6 +64,12 @@
                   <option v-for="pt in paymentTypes" :key="pt.id" :value="pt.id">{{ pt.title }}</option>
                 </select>
               </div>
+              <div class="mt-3"> 
+                <label>condição</label>
+                <select v-model="payload.condition_id" class="w-full m-0 block bg-slate-100 p-2.5">
+                  <option v-for="c in conditions" :key="c.id" :value="c.id">{{ c.title }}</option>
+                </select>
+              </div>
               <div class="mt-3">
                 <label>valor R$</label>
                 <input type="number" v-model="payload.value" class="bg-slate-100 w-full p-2">
@@ -89,7 +95,7 @@
 </template>
 
 <script setup>
-import {ref, onMounted} from 'vue'
+import {ref, onMounted, inject} from 'vue'
 import http from "../services/http";
 
 const payload = ref({})
@@ -97,6 +103,9 @@ const accounts = ref([]);
 const categorys = ref([]);
 const transactionsTypes = ref([]);
 const paymentTypes = ref([]);
+const conditions = ref([]);
+
+const swal = inject("$swal");
 
 
 defineEmits(['payload', 'fechar']);
@@ -118,6 +127,17 @@ function getAccounts() {
     .get("/account")
     .then((res) => {
       accounts.value = res.data.data;
+    })
+    .catch((e) => {
+      swal("Erro!", "Email ou senha incorreta", "error");
+    });
+}
+
+function getConditions() {
+  http
+    .get("/condition")
+    .then((res) => {
+      conditions.value = res.data.data;
     })
     .catch((e) => {
       swal("Erro!", "Email ou senha incorreta", "error");
@@ -151,5 +171,6 @@ onMounted(() => {
   getPaymentTypes();
   getAccounts();
   getCategorys();
+  getConditions();
 });
 </script>
